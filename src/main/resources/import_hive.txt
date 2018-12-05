@@ -1,0 +1,46 @@
+```
+create external table user_action(user_id string,sku_id string,time string,model_id string,type string,cate string,brand string)
+row format delimited fields terminated by ','
+location '/jdata/user_action';
+
+
+create external table user(user_id string,age string,sex string,user_lv_cd string,user_reg_tm string)
+row format delimited fields terminated by ','
+location '/jdata/user';
+
+
+create external table product(sku_id string,a1 string,a2 string,a3 string,cate string,brand string)
+row format delimited fields terminated by ','
+location '/jdata/product';
+
+
+create external table comment(dt string,sku_id string,comment_num string,has_bad_comment string,bad_comment_rate string)
+row format delimited fields terminated by ','
+location '/jdata/comment';
+
+hadoop fs  -mkdir  /jdata
+hadoop fs -put -p  /Users/david/Documents/JData2/comment/   /jdata/
+hadoop fs -put -p  /Users/david/Documents/JData2/product   /jdata/
+hadoop fs -put -p  /Users/david/Documents/JData2/user   /jdata/
+hadoop fs -put -p  /Users/david/Documents/JData2/user_action/   /jdata/
+
+
+create external table user_action(user_id string,sku_id string,time string,model_id string,type string,cate string,brand string)
+row format delimited fields terminated by ','
+location '/jdata/user_action';
+
+
+create external table user(user_id string,age string,sex string,user_lv_cd string,user_reg_tm string)
+row format delimited fields terminated by ','
+location '/jdata/user';
+
+
+create external table product(sku_id string,a1 string,a2 string,a3 string,cate string,brand string)
+row format delimited fields terminated by ','
+location '/jdata/product';
+
+
+create external table comment(dt string,sku_id string,comment_num string,has_bad_comment string,bad_comment_rate string)
+row format delimited fields terminated by ','
+location '/jdata/comment';
+```

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>可视化</title>
+
+    <!-- 引入 ECharts 文件 -->
+    <script src="./static/js/echarts.min.js"></script>
+    <script src="./static/js/jquery.js"></script>
+</head>
+<body>
+
+start:<select id="select1"></select>
+end:<select id="select2"></select>
+<button id="submit" onclick="submit()">确定</button>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main"
+     style="width: 1000px;height:500px;position: absolute; top:50%; left: 50%; margin-top: -300px;margin-left: -500px"></div>
+
+
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    xAxisData = [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106];
+    data1 = [15, 93746, 84508, 81019, 73341, 58926, 52289, 42265, 52225, 57202, 60712, 70187, 83257, 91591, 107038, 127085, 125318, 134550, 127415, 113448, 136364, 146594, 158786, 123376, 135699, 165646, 160622, 169312, 179816, 182071, 268670, 252971, 283479, 280480, 324043, 337401, 370997, 287571, 273725, 359540, 339875, 370337, 381415, 532232, 865738, 349363, 261185, 249340, 295403, 276597, 254604, 238985, 208425, 220748, 242522, 239616, 283680, 268682, 257551, 272341, 246342, 258833, 332447, 308007, 309009, 276472, 290476, 413420, 481314, 441584, 374028, 338380, 316609, 293375, 389916, 415904];
+    data2 = [6, 35420, 32035, 31063, 28301, 22585, 20402, 16123, 20214, 21961, 23229, 26937, 31898, 34773, 40963, 48031, 51905, 55515, 47797, 42962, 53364, 56502, 59569, 46914, 51567, 62932, 60963, 66850, 69143, 69191, 100030, 97132, 108937, 106663, 126211, 133272, 139028, 108066, 103682, 135537, 129322, 146609, 150507, 197769, 332352, 136023, 102595, 93084, 108946, 104044, 94540, 88334, 77735, 81635, 88554, 89217, 104352, 98074, 93469, 100305, 90258, 94411, 121696, 111963, 112156, 100138, 105346, 149258, 175708, 161347, 138242, 123194, 114159, 105914, 133934, 145111]
+    data3 = [0,1388,1152,1027, 851, 721, 641, 560, 642, 705, 677, 939,1081,1213,1507,1660,1782,1858,1936,1530, 189,1785,2323,1867,1943,2194,2042, 554,2005,2288,4236,3670,3820,3396,1109,   0,5598,3837,3831,5365,2269,   0,   0,6906,3936,4865,3135,3009,3020,2761,3171,2890,2118,2869,2917,2695,2706,3231,4075,3738,3274,3104,3670,3424,3280,3473,3509,6397,7095,5595,4374,4328,3976,3621,5169,4964]
+    data4 = [0, 490, 468, 333, 331, 280, 218, 175, 203, 203, 235, 352, 351, 443, 505, 600, 589, 625, 642, 592,  78, 655, 717, 683, 711, 671, 669, 157, 673, 806,1217,1204,1327,1096, 333,   0,1840,1346,1298,1652, 742,   0,   0,2725,4835,2273,1829,1346,1551,1327,1589,1387,1092,1340,1300,1176,1235,1329,1581,1494,1313,1321,1523,1386,1396,1543,1530,2211,2566,2242,1969,1926,1811,1687,2093,2379]
+    data5 = [0,90, 84, 78, 47, 26, 17, 11, 25, 16, 18, 47, 41, 46, 65, 58, 103, 108, 92, 85, 79, 82, 146, 79, 98, 113, 134, 106, 108, 120, 284, 186, 199, 175, 195, 174, 431, 165, 140, 239, 223, 268, 150, 325, 1297, 264, 156, 164, 144, 135, 168, 147, 115, 145, 211, 116, 138, 138, 297, 158, 171, 208, 199, 174, 175, 181, 199, 446, 493, 331, 249, 216, 213, 203, 379, 375]
+    data6 = [0,209, 248, 169, 218, 151, 146, 183, 172, 162, 155, 208, 201, 262, 286, 402, 332, 357, 322, 295, 426, 374, 430, 354, 385, 445, 428, 482, 505, 499, 669, 680, 714, 684, 775, 860, 806, 723, 683, 789, 737, 826, 872, 1192, 1423, 764, 625, 630, 610, 642, 637, 599, 549, 493, 510, 581, 636, 598, 618, 654, 571, 553, 721, 609, 782, 643, 658, 863, 982, 835, 754, 694, 661, 621, 776, 850]
+    data7 = [9, 56149, 50521, 48349, 43593, 35163, 30865, 25213, 30969, 34155, 36398, 41704, 49685, 54854, 63712, 76334, 70607, 76087, 76626, 67984, 82228, 87196, 95601, 73479, 80995, 99291, 96386, 101163, 107382, 109167, 162234, 150099, 168482, 168466, 195420, 203095, 223294, 173434, 164091, 215958, 206582, 222634, 229886, 323315, 511895, 205174, 152845, 151107, 181132, 167688, 154499, 145628, 126816, 134266, 149030, 145831, 174613, 165312, 157511, 165992, 150755, 159236, 204638, 190451, 191220, 170494, 179234, 254245, 294470, 271234, 228440, 208022, 195789, 181329, 247565, 262225]
+
+    option = {
+        title: {
+            text: '用户行为'
+        },
+        legend: {
+            data: ['所有', '浏览', '加购', '删除', '下单','关注','点击'],
+            align: 'left'
+        },
+        toolbox: {
+            // y: 'bottom',
+            feature: {
+                magicType: {
+                    type: ['stack', 'tiled']
+                },
+                dataView: {},
+                saveAsImage: {
+                    pixelRatio: 2
+                }
+            }
+        },
+        tooltip: {},
+        xAxis: {
+            data: xAxisData,
+            silent: false,
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {},
+        series: [
+            {
+                name: '所有',
+                type: 'bar',
+                data: data1,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            },
+            {
+                name: '浏览',
+                type: 'bar',
+                data: data2,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            },
+            {
+                name: '加购',
+                type: 'bar',
+                data: data3,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            },
+            {
+                name: '删除',
+                type: 'bar',
+                data: data4,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            },
+            {
+                name: '下单',
+                type: 'bar',
+                data: data5,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            },
+            {
+                name: '关注',
+                type: 'bar',
+                data: data6,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            },
+            {
+                name: '点击',
+                type: 'bar',
+                data: data7,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            }
+        ],
+        animationEasing: 'elasticOut',
+        animationDelayUpdate: function (idx) {
+            return idx * 5;
+        }
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+<script type="text/javascript">
+    $.each(xAxisData, function (i) {
+        $("#select1").append("<option value='" + xAxisData[i]+ "'>" + xAxisData[i] + "</option>");
+    })
+    $.each(xAxisData, function (i) {
+        $("#select2").append("<option value='" + xAxisData[i]+ "'>" + xAxisData[i] + "</option>");
+    })
+</script>
+<script type="text/javascript">
+    function submit(){
+        var start=$("#select1").val()-31
+        var end=$("#select2").val()-30
+        if(start>end){
+            return;
+        }
+        var xAxisData2=xAxisData.slice(start,end)
+        var data12=data1.slice(start,end)
+        var data22=data2.slice(start,end)
+        var data32=data3.slice(start,end)
+        var data42=data4.slice(start,end)
+        var data52=data5.slice(start,end)
+        var data62=data6.slice(start,end)
+        var data72=data7.slice(start,end)
+
+        option = {
+            title: {
+                text: '用户行为'
+            },
+            legend: {
+                data: ['所有', '浏览', '加购', '删除', '下单','关注','点击'],
+                align: 'left'
+            },
+            toolbox: {
+                // y: 'bottom',
+                feature: {
+                    magicType: {
+                        type: ['stack', 'tiled']
+                    },
+                    dataView: {},
+                    saveAsImage: {
+                        pixelRatio: 2
+                    }
+                }
+            },
+            tooltip: {},
+            xAxis: {
+                data: xAxisData2,
+                silent: false,
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '所有',
+                    type: 'bar',
+                    data: data12,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    }
+                },
+                {
+                    name: '浏览',
+                    type: 'bar',
+                    data: data22,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    }
+                },
+                {
+                    name: '加购',
+                    type: 'bar',
+                    data: data32,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    }
+                },
+                {
+                    name: '删除',
+                    type: 'bar',
+                    data: data42,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    }
+                },
+                {
+                    name: '下单',
+                    type: 'bar',
+                    data: data52,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    }
+                },
+                {
+                    name: '关注',
+                    type: 'bar',
+                    data: data62,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    }
+                },
+                {
+                    name: '点击',
+                    type: 'bar',
+                    data: data72,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    }
+                }
+            ],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+                return idx * 5;
+            }
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+</script>
+</body>
+</html>
